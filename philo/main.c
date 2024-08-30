@@ -11,10 +11,16 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include "philo.h"
 
-int main(void)
+int main(int argc, char **argv)
 {
-    printf("HOla mundo");
+    //Si no es esto, falla........
+    if (argc != 5 && argc != 6 && check_arg_content(argv[0]))
+    {
+        write(2, "Wrong argument\n", 14);
+        return (1);
+    }
 
     return (0);
 }

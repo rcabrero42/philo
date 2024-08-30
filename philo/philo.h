@@ -20,10 +20,9 @@
 
 # define PHILO_MAX 201
 
-// CHECK_ERRORS
+//UTILS Y CHECK_ERRORS
 int check_args(int argc,char **argv);
-
-// UTILS
+int	check_arg_content(char *arg);
 int	ft_atoi(char *str);
 
 #endif

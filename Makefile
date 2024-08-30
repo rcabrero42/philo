@@ -3,23 +3,22 @@ CC          = gcc
 CFLAGS      = -Wall -Wextra -Werror -I./philo -g3
 
 # Source and binary directories
-SRC		    	= philo
-BIN				= bin
+SRC_DIR     = philo
+BIN_DIR     = bin
 
 # Project details
-NAME			= philo
+NAME        = philo_exec
 
 # Define the source files here
-PHILO		=	main.c \
-				check_errors.c \
-				utils.c
+PHILO       = main.c \
+              check_errors.c \
+              utils.c
 
-PHILO_SRC 	=   $(PHILO:%=philo/%)
+# Full paths to source files
+PHILO_SRC   = $(PHILO:%=$(SRC_DIR)/%)
 
-SOURCE		=	$(PHILO_SRC)
-SRC_CODE    =   $(SOURCE:%=$(SRC)/%)
-OBJ         =   $(SRC_CODE:$(SRC)/%.c=$(BIN)/%.o)
-# OBJ			=	$(SRC_CODE:.c=.o)
+# Full paths to object files (in bin directory)
+OBJ         = $(PHILO:%.c=$(BIN_DIR)/%.o)
 
 # Colors for output
 NC          = \033[0m
@@ -31,23 +30,23 @@ TITLE       = \033[38;5;33m
 # Triggers
 all: $(NAME)
 
-$(BIN)/%.o: $(SRC)/%.c
+# Compile .c files into .o files in the bin directory
+$(BIN_DIR)/%.o: $(SRC_DIR)/%.c
 	@echo "- ${TITLE}Compiling${NC} $< -> $@"
-	@mkdir -p $(dir $@)
+	@mkdir -p $(BIN_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo " ${GREEN}[OK]${NC}"
 
+# Link the object files to create the executable
 $(NAME): $(OBJ)
-	@echo "\n${TITLE}Compiling${NC} ${YELLOW}$(NAME)${NC}"
+	@echo "\n${TITLE}Linking${NC} ${YELLOW}$(NAME)${NC}"
 	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 	@echo " ${GREEN}[OK]${NC}\n"
-
-.PHONY: all clean fclean re philo
 
 # Clean up object files and binary directory
 clean:
 	@echo "- ${RED}Cleaning${NC} object files and binary directory"
-	@rm -rf $(BIN)
+	@rm -rf $(BIN_DIR)
 
 # Remove object files, binary, and any other build artifacts
 fclean: clean

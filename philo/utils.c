@@ -37,3 +37,18 @@ int	ft_atoi(char *str)
 	}
 	return (sign * nb);
 }
+
+
+int	check_arg_content(char *arg)
+{
+	int	i;
+
+	i = 0;
+	while (arg[i] != '\0')
+	{
+		if (arg[i] < '0' || arg[i] > '9')
+			return (1);
+		i++;
+	}
+	return (0);
+}
