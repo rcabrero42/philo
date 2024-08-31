@@ -16,6 +16,7 @@
 int main(int argc, char **argv)
 {
     //Si no es esto, falla........
+    //lo sacamos de aqui,,,,druina@student
     if (argc != 5 && argc != 6 && check_arg_content(argv[0]))
     {
         write(2, "Wrong argument\n", 14);
