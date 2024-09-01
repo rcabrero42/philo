@@ -31,8 +31,8 @@ typedef struct s_philo
 //Informacion relevante sobre la ejecucion del programa
 typedef struct s_philo_info
 {
-    int             num_philos;       // Número de filósofos, el numero de filosofos siempre es el mismo que el numero de tenedores!!
-    t_philo			*philos;
+    int            num_philos;       // Número de filósofos, el numero de filosofos siempre es el mismo que el numero de tenedores!!
+    t_philo			*philos;        //Esta info no se si quiero que este aqui......
 	pthread_mutex_t *forks;           // Array de mutexes para los tenedores
     int             time_to_die;      // Tiempo en morir (en milisegundos)
     int             time_to_eat;      // Tiempo en comer (en milisegundos)
@@ -45,5 +45,9 @@ typedef struct s_philo_info
 int check_args(int argc,char **argv);
 int	check_arg_content(char *arg);
 int	ft_atoi(char *str);
+
+
+//INIT_STRUCT
+int init_info(char **argv);
 
 #endif

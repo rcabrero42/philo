@@ -12,9 +12,10 @@
 
 #include "philo.h"
 
-//TODO: PONER MI ATOI....
-
-int	ft_atoi(char *str)
+/**
+ * Este atoi solo funciona para numeros positivos....
+ */
+int	ft_atoi_plus(char *str)
 {
 	unsigned long long	nb;
 	int					sign;
@@ -27,14 +28,18 @@ int	ft_atoi(char *str)
 		|| str[i] == '\f' || str[i] == '\r')
 		i++;
 	if (str[i] == '-')
-		sign = -1;
-	if (str[i] == '-' || str[i] == '+')
+		return(-1);
+	if (str[i] == '+')
 		i++;
-	while (str[i] >= '0' && str[i] <= '9')
+	while (str[i])
 	{
+		if(str[i] >= '0' && str[i] <= '9')
+			return (-1);
 		nb = nb * 10 + (str[i] - '0');
 		i++;
 	}
+	if (i == 0 || (str[0] == '+' && i == 1))
+		return (-1);
 	return (sign * nb);
 }
 
@@ -51,4 +56,11 @@ int	check_arg_content(char *arg)
 		i++;
 	}
 	return (0);
+}
+
+int	ft_isdigit(int c)
+{
+	if (c < 48 || c > 57)
+		return (0);
+	return (-1);
 }
