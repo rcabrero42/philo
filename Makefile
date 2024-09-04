@@ -11,8 +11,8 @@ NAME        = philo_exec
 
 # Define the source files here
 PHILO       = main.c \
-              check_errors.c \
-              utils.c
+              utils.c \
+			  init_structs.c
 
 # Full paths to source files
 PHILO_SRC   = $(PHILO:%=$(SRC_DIR)/%)

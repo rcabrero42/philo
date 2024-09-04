@@ -44,10 +44,9 @@ typedef struct s_philo_info
 //UTILS Y CHECK_ERRORS
 int check_args(int argc,char **argv);
 int	check_arg_content(char *arg);
-int	ft_atoi(char *str);
-
+int	ft_atoi_plus(char *str);
 
 //INIT_STRUCT
-int init_info(char **argv);
+int init_info(char **argv, int has_max_eat, t_philo_info *p_info);
 
 #endif

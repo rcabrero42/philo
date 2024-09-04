@@ -17,6 +17,7 @@
  */
 int	ft_atoi_plus(char *str)
 {
+	printf("Atoi plus para: %s\n" , str);
 	unsigned long long	nb;
 	int					sign;
 	int					i;
@@ -33,7 +34,7 @@ int	ft_atoi_plus(char *str)
 		i++;
 	while (str[i])
 	{
-		if(str[i] >= '0' && str[i] <= '9')
+		if (str[i] < '0' || str[i] > '9')  // Comprobar si el carácter no es un dígito
 			return (-1);
 		nb = nb * 10 + (str[i] - '0');
 		i++;
