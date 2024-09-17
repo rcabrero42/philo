@@ -17,13 +17,10 @@
  */
 int	ft_atoi_plus(char *str)
 {
-	printf("Atoi plus para: %s\n" , str);
 	unsigned long long	nb;
-	int					sign;
 	int					i;
 
 	nb = 0;
-	sign = 1;
 	i = 0;
 	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
 		|| str[i] == '\f' || str[i] == '\r')
@@ -34,16 +31,17 @@ int	ft_atoi_plus(char *str)
 		i++;
 	while (str[i])
 	{
-		if (str[i] < '0' || str[i] > '9')  // Comprobar si el carácter no es un dígito
+		if (str[i] < '0' || str[i] > '9')
 			return (-1);
 		nb = nb * 10 + (str[i] - '0');
+		if (nb > 2147483647)
+			return (-1);
 		i++;
 	}
 	if (i == 0 || (str[0] == '+' && i == 1))
 		return (-1);
-	return (sign * nb);
+	return (nb);
 }
-
 
 int	check_arg_content(char *arg)
 {
@@ -64,4 +62,13 @@ int	ft_isdigit(int c)
 	if (c < 48 || c > 57)
 		return (0);
 	return (-1);
+}
+
+size_t	get_current_time(void)
+{
+	struct timeval	time;
+
+	if (gettimeofday(&time, NULL) == -1)
+		write(2, "gettimeofday() error\n", 22);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
