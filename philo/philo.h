@@ -29,8 +29,11 @@ typedef struct s_philo
 	int             is_dead;
     size_t          last_eat_time;
     size_t          last_sleep_time;
+    pthread_mutex_t *write;
+    pthread_mutex_t *eat;
     pthread_mutex_t *r_fork;
     pthread_mutex_t *l_fork;
+    t_actions       s_actions;        // Hilos de las acciones que va se van a poder realiizar...
 }			t_philo;
 
 //Informacion relevante sobre la ejecucion del programa
@@ -45,9 +48,8 @@ typedef struct s_philo_info
     int             max_meals;        // Veces máximas que cada filósofo debe comer
     int             is_dead;		  // Controla si un filosoof ha muerto para parar la ejecucion
     size_t          init_time;        // Tiempo en el que iniciamos todos los filosofos
-    t_actions       s_actions;        // Hilos de las acciones que va se van a poder realiizar...
 }               t_philo_info;
-//ESto no me queda claro, revisar
+
 typedef struct s_actions
 {
 	pthread_mutex_t	dead_lock;
