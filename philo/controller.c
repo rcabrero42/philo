@@ -12,13 +12,41 @@
 
 #include "philo.h"
 
-void philo_controller(t_philo_info * philo_info)
+void init_program(t_philo_info * philo_info)
 {
-	//Aqui ya deberiamos controlar el tiempo de vida de un filosofo
-	
+	int	i;
+
+	if(philo_info != NULL)
+	{
+		i = 0;
+		while (philo_info->num_philos > i)
+			philo_controller(philo_info, &philo_info->philos[i]);
+	}else{
+		printf("ERROR...");
+		return ;
+	}
 }
 
-int is_dead(t_philo_info * philo_info,t_philo * philo)
+//Aqui lanzamos tooodos los fiilosofoss a realiiar  ss acciones
+void philo_controller(t_philo_info * philo_info,t_philo * philo)
 {
+	if(philo->id % 2 == 0)
+		usleep(1);
+	while (!is_dead(philo))
+	{
+		eat(philo_info);
+		sleep(philo_info);
+		think(philo_info);
+	}
+	printf("El filosofo %d ha muerto x.x \n",philo);
+}
 
+//COmprueba si el filosofo ha muerto
+int is_dead(t_philo * philo)
+{
+	int	is_dead;
+	pthread_mutex_lock(philo->dead);
+	is_dead = philo->is_dead;
+	pthread_mutex_unlock(philo->dead);
+	return (is_dead);
 }

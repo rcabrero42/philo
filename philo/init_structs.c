@@ -14,7 +14,7 @@
 
 /**
  * Inicializa la estructura de informacion
- *	Hacemmos el atoi de todos y convertimos lo que necesitemos.
+ * Hacemmos el atoi de todos y convertimos lo que necesitemos.
  */
 int init_info(char **argv, int has_max_eat, t_philo_info *p_info)
 {

@@ -34,17 +34,16 @@ int main(int argc, char **argv)
 	}
 	init_forks(&p_info);
 	init_philos(&p_info);
-	
+	init_program(&p_info);
     return (0);
 }
 
-/**
- * Comprueba si el filosofo ha muerto
- * Si devuelve 1 esta muerto y si devuelve 0 todo bien...
- */
-int check_dead(t_philo * philo)
-{
-	// pthread_mutex_lock(philo->dead);
+// /**
+//  * Comprueba si el filosofo ha muerto.. * Si devuelve 1 esta muerto y si devuelve 0 todo bien...
+//  */
+// int check_dead(t_philo * philo)
+// {
+// 	// pthread_mutex_lock(philo->dead);
 
-	return (0);
-}
+// 	return (0);
+// }

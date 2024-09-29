@@ -29,6 +29,7 @@ typedef struct s_philo
 	int             is_dead;
     size_t          last_eat_time;
     size_t          last_sleep_time;
+    pthread_mutex_t *dead;
     pthread_mutex_t *write;
     pthread_mutex_t *eat;
     pthread_mutex_t *r_fork;
