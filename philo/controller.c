@@ -12,19 +12,67 @@
 
 #include "philo.h"
 
-void init_program(t_philo_info * philo_info)
+void *philo_thread(void *arg)
 {
-	int	i;
+    t_philo *philo = (t_philo *)arg;
+    t_philo_info *philo_info = philo->philo_info;
 
-	if(philo_info != NULL)
-	{
-		i = 0;
-		while (i < philo_info->num_philos)
-		{
-			philo_controller(philo_info, &philo_info->philos[i]);
-			i ++;
-		}
-	}
+    if (philo->id % 2 == 0)
+        usleep(1);
+    //Si no esta muerto y no ha comido las veces suficientes, sigue
+    while (!is_dead(philo) && philo_info->has_max_eat && philo->meals_eaten <= philo_info->max_meals)
+    {
+        eat(philo_info, philo);
+        philo->meals_eaten ++;
+        ft_sleep(philo_info, philo);
+        think(philo);
+    }
+    if(is_dead(philo))
+    {
+        printf("El filósofo %d ha muerto x.x \n", philo->id);
+    }
+    else if(philo->meals_eaten >= philo_info->max_meals)
+    {
+        printf("El filosofo %d ya ha comido suficiente", philo->id);
+    }
+    return NULL;
+}
+
+void init_program(t_philo_info *philo_info)
+{
+    int i;
+    pthread_t *threads;
+
+    if (philo_info != NULL)
+    {
+        threads = malloc(sizeof(pthread_t) * philo_info->num_philos);
+        if (threads == NULL)
+        {
+            perror("Failed to allocate memory for threads");
+            exit(EXIT_FAILURE);
+        }
+
+        i = 0;
+        while (i < philo_info->num_philos)
+        {
+            philo_info->philos[i].philo_info = philo_info; // Añade esta línea para pasar philo_info a cada filósofo
+            if (pthread_create(&threads[i], NULL, philo_thread, &philo_info->philos[i]) != 0)
+            {
+                perror("Failed to create thread");
+                exit(EXIT_FAILURE);
+            }
+            i++;
+        }
+
+        i = 0;
+        while (i < philo_info->num_philos)
+        {
+            pthread_join(threads[i], NULL);
+            i++;
+        }
+
+        free(threads);
+    }
 }
 
 //Aqui lanzamos tooodos los fiilosofoss a realiiar  ss acciones

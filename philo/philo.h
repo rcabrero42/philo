@@ -20,7 +20,6 @@
 
 # define PHILO_MAX 201
 
-
 //t_actions es una estructura que contiene los mutexes de las acciones que se pueden realizar
 typedef struct s_actions
 {
@@ -29,36 +28,37 @@ typedef struct s_actions
 	pthread_mutex_t	write_lock;
 }               t_actions;
 
-//TODO: Esta estructura es pprovisional...
+typedef struct s_philo_info t_philo_info;
+
 typedef struct s_philo
 {
     int             id;
-	int             is_eaten;
-	int             is_sleep;
-	int             is_dead;
+    int             is_eaten;
+    int             is_sleep;
+    int             is_dead;
+    int             meals_eaten;
     size_t          last_eat_time;
     size_t          last_sleep_time;
-    pthread_mutex_t *write; // Campo para el mutex write
+    pthread_mutex_t *write;
     pthread_mutex_t *eat;
     pthread_mutex_t *r_fork;
     pthread_mutex_t *l_fork;
-    t_actions       s_actions;        // Hilos de las acciones que va se van a poder realiizar...
-    pthread_mutex_t	dead; // Añade este campo para el mutex dead
-}			t_philo;
+    pthread_mutex_t dead;
+    t_philo_info    *philo_info; // Añade este campo para pasar philo_info a cada filósofo
+}               t_philo;
 
-//Informacion relevante sobre la ejecucion del programa
 typedef struct s_philo_info
 {
-    int             num_philos;       // Número de filósofos, el numero de filosofos siempre es el mismo que el numero de tenedores!!
-    t_philo			*philos;          //Esta info no se si quiero que este aqui......
-	pthread_mutex_t *forks;           // Array de mutexes para los tenedores
-    int             time_to_die;      // Tiempo en morir (en milisegundos)
-    int             time_to_eat;      // Tiempo en comer (en milisegundos)
-	int				time_to_sleep;	  // Tiempo en dormir (en milisegundos)
-    int             max_meals;        // Veces máximas que cada filósofo debe comer
-    int             is_dead;		  // Controla si un filosoof ha muerto para parar la ejecucion
-    size_t          init_time;        // Tiempo en el que iniciamos todos los filosofos
-    
+    int             num_philos;
+    t_philo         *philos;
+    pthread_mutex_t *forks;
+    int             time_to_die;
+    int             time_to_eat;
+    int             time_to_sleep;
+    int             has_max_eat; // Add this line
+    int             max_meals;
+    int             is_dead;
+    size_t          init_time;
 }               t_philo_info;
 
 //UTILS Y CHECK_ERRORS

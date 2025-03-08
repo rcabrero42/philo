@@ -46,7 +46,7 @@ void eat(t_philo_info	*p_info, t_philo * philo)
 		// deberiamos controlarlo, antes de que coma
 		philo->is_eaten = 1;
 		write_info(philo, "is eaten");
-		usleep(p_info->time_to_eat);
+		usleep(p_info->time_to_eat * 1000);
 		philo->is_eaten = 0;
 		pthread_mutex_unlock(philo->eat);
 		pthread_mutex_unlock(philo->r_fork);
@@ -54,7 +54,8 @@ void eat(t_philo_info	*p_info, t_philo * philo)
 	}
 	else
 	{
-		usleep(p_info->time_to_die);
+		printf("No ha podido comer \n ");
+		usleep(p_info->time_to_die * 1000);
 		pthread_mutex_unlock(philo->r_fork);
 	}
 }
@@ -62,7 +63,7 @@ void eat(t_philo_info	*p_info, t_philo * philo)
 void ft_sleep(t_philo_info * philo_info, t_philo * philo)
 {
 	write_info(philo, "is sleeping");
-	usleep(philo_info->time_to_sleep);
+	usleep(philo_info->time_to_sleep * 1000);
 }
 
 void think(t_philo * philo)

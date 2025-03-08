@@ -30,6 +30,7 @@ int init_info(char **argv, int has_max_eat, t_philo_info *p_info)
 	p_info->time_to_sleep = ft_atoi_plus(argv[4]);
 	if(has_max_eat)
 	{
+        p_info->has_max_eat = 1;
 		p_info->max_meals = ft_atoi_plus(argv[5]);
 		if(p_info->max_meals == -1)
 			return (-1);
@@ -88,8 +89,10 @@ void	init_philos(t_philo_info *philo_info)
     i = 0;
     while (i < philo_info->num_philos)
     {
+        printf("Filósofo %d:\n", i);
         philo_info->philos[i].id = i; // Puede ser el ID 0
         philo_info->philos[i].is_dead = 0;
+        philo_info->philos[i].meals_eaten = 0;
         philo_info->philos[i].is_sleep = 0;
         philo_info->philos[i].is_eaten = 0;
         philo_info->philos[i].l_fork = &philo_info->forks[i]; // Acceso correcto a los tenedores
@@ -110,6 +113,13 @@ void	init_philos(t_philo_info *philo_info)
             perror("Failed to allocate memory for write mutex");
             exit(EXIT_FAILURE);
         }
+        
+        if (pthread_mutex_init(philo_info->philos[i].write, NULL) != 0)
+        {
+            perror("Failed to initialize mutex");
+            exit(EXIT_FAILURE);
+        }
+
         if (pthread_mutex_init(philo_info->philos[i].write, NULL) != 0)
         {
             perror("Failed to initialize mutex");

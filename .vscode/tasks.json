@@ -1,0 +1,20 @@
+{
+    "launch": {
+      "configurations": [
+        {
+          "program": "/home/rcabrero/cursus/philosopher/philo.exec"
+        }
+      ]
+    },
+    "tasks": {
+      "tasks": [
+        {
+          "label": "build",
+          "command": "make",
+          "args": [
+            "all"
+          ]
+        }
+      ]
+    }
+  }
