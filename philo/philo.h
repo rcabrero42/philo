@@ -35,7 +35,7 @@ typedef struct s_philo
     int             id;
     int             is_eaten;
     int             is_sleep;
-    int             is_dead;
+    int             check_dead;
     int             meals_eaten;
     size_t          last_eat_time;
     size_t          last_sleep_time;
@@ -52,12 +52,12 @@ typedef struct s_philo_info
     int             num_philos;
     t_philo         *philos;
     pthread_mutex_t *forks;
-    int             time_to_die;
+    int          time_to_die;
     int             time_to_eat;
     int             time_to_sleep;
     int             has_max_eat; // Add this line
     int             max_meals;
-    int             is_dead;
+    int             check_dead;
     size_t          init_time;
 }               t_philo_info;
 
@@ -80,7 +80,7 @@ void    init_program(t_philo_info * philo_info);
 void eat(t_philo_info	*p_info, t_philo * philo);
 void ft_sleep(t_philo_info * philo_info, t_philo * philo);
 void think(t_philo * philo);
-int is_dead(t_philo *philo);
+int check_dead(t_philo *philo);
 
 void write_info(t_philo * philo,char *message);
 void philo_controller(t_philo_info * philo_info,t_philo * philo);

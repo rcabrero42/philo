@@ -20,18 +20,18 @@ void *philo_thread(void *arg)
     if (philo->id % 2 == 0)
         usleep(1);
     //Si no esta muerto y no ha comido las veces suficientes, sigue
-    while (!is_dead(philo) && philo_info->has_max_eat && philo->meals_eaten <= philo_info->max_meals)
+    while (!check_dead(philo))
     {
         eat(philo_info, philo);
         philo->meals_eaten ++;
         ft_sleep(philo_info, philo);
         think(philo);
     }
-    if(is_dead(philo))
+    if(check_dead(philo))
     {
-        printf("El filósofo %d ha muerto x.x \n", philo->id);
+        printf("El filósofo %d ha muerto x.x!! \n", philo->id);
     }
-    else if(philo->meals_eaten >= philo_info->max_meals)
+    if(philo->meals_eaten >= philo_info->max_meals)
     {
         printf("El filosofo %d ya ha comido suficiente", philo->id);
     }
@@ -87,7 +87,7 @@ void philo_controller(t_philo_info * philo_info,t_philo * philo)
 {
 	if(philo->id % 2 == 0)
 		usleep(1);
-	while (!is_dead(philo))
+	while (!check_dead(philo))
 	{
 		eat(philo_info,philo);
 		ft_sleep(philo_info,philo);
@@ -114,11 +114,22 @@ void	cleanup_philos(t_philo_info *philo_info)
 }
 
 //COmprueba si el filosofo ha muerto
-int is_dead(t_philo *philo)
+int check_dead(t_philo *philo)
 {
-    int	is_dead;
+    int	check_dead;
+
+    size_t current_time = get_current_time();
     pthread_mutex_lock(&philo->dead); // Usa el operador & para pasar la dirección del mutex
-    is_dead = philo->is_dead;
+    // printf("Tiempo actual: %zu  Tiempo de la ultima comida: %zu\n",current_time, philo->last_eat_time);
+    // printf("Tiempo que tarda en morir: %d Resultado: %zu\n", philo->philo_info->time_to_die, current_time - philo->last_eat_time);
+    if (current_time - philo->last_eat_time > (size_t)philo->philo_info->time_to_die)
+    {
+        philo->check_dead = 1;
+        printf("EL FILOSOFO %d HA MUERTO\n", philo->id);
+    }else{
+        printf("El filosofo %d no ha muerto\n", philo->id);
+    }
+    check_dead = philo->check_dead;
     pthread_mutex_unlock(&philo->dead); // Usa el operador & para pasar la dirección del mutex
-    return (is_dead);
+    return (check_dead);
 }
