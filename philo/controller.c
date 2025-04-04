@@ -16,24 +16,42 @@ void *philo_thread(void *arg)
 {
     t_philo *philo = (t_philo *)arg;
     t_philo_info *philo_info = philo->philo_info;
+    int is_dead = 0;
 
     if (philo->id % 2 == 0)
         usleep(1);
+        
     //Si no esta muerto y no ha comido las veces suficientes, sigue
-    while (!check_dead(philo))
+    while (is_dead  != 1 || (philo_info->has_max_eat && philo->meals_eaten >= philo_info->max_meals))
     {
-        eat(philo_info, philo);
-        philo->meals_eaten ++;
-        ft_sleep(philo_info, philo);
-        think(philo);
+        if(!check_dead(philo))
+        {
+           is_dead = eat(philo_info, philo);
+        }
+        if(is_dead != 1 && !check_dead(philo)  )
+        {
+            ft_sleep(philo_info, philo);
+        }else
+        {
+            is_dead = 1;
+            break;
+        }
+        if(is_dead != 1 && !check_dead(philo))
+        {
+            think(philo);
+        }
+        else
+        {
+            is_dead = 1;
+            break;
+        }
     }
-    if(check_dead(philo))
-    {
-        printf("El filósofo %d ha muerto x.x!! \n", philo->id);
-    }
-    if(philo->meals_eaten >= philo_info->max_meals)
+    if(is_dead != 1 && philo->meals_eaten >= philo_info->max_meals)
     {
         printf("El filosofo %d ya ha comido suficiente", philo->id);
+    }
+    else {
+        printf("El filósofo %d ha muerto x.x!! \n", philo->id);
     }
     return NULL;
 }
@@ -113,23 +131,27 @@ void	cleanup_philos(t_philo_info *philo_info)
     free(philo_info->philos);
 }
 
-//COmprueba si el filosofo ha muerto
 int check_dead(t_philo *philo)
 {
-    int	check_dead;
+    int check_dead;
 
     size_t current_time = get_current_time();
-    pthread_mutex_lock(&philo->dead); // Usa el operador & para pasar la dirección del mutex
-    // printf("Tiempo actual: %zu  Tiempo de la ultima comida: %zu\n",current_time, philo->last_eat_time);
-    // printf("Tiempo que tarda en morir: %d Resultado: %zu\n", philo->philo_info->time_to_die, current_time - philo->last_eat_time);
-    if (current_time - philo->last_eat_time > (size_t)philo->philo_info->time_to_die)
+    pthread_mutex_lock(&philo->dead); // Bloquea el mutex para acceso seguro
+    printf("Tiempo actual: %zu  Tiempo de la ultima comida: %zu\n", current_time, philo->last_eat_time);
+    printf("Tiempo que tarda en morir: %d Resultado: %zu\n", philo->philo_info->time_to_die, current_time - philo->last_eat_time);
+    printf("Tiempo actuaAAl %zu\n",get_current_time());
+    //Si el tiempo actual menos el tiempo de la ultima comida es mayor al tiempo que tarda en morir, muere...
+    if (current_time - philo->last_eat_time >= (size_t)philo->philo_info->time_to_die)
     {
-        philo->check_dead = 1;
-        printf("EL FILOSOFO %d HA MUERTO\n", philo->id);
-    }else{
-        printf("El filosofo %d no ha muerto\n", philo->id);
+        philo->check_dead = 1; // Marca al filósofo como muerto
+        // printf("EL FILOSOFO %d HA MUERTO\n", philo->id);
     }
+    // else
+    // {
+    //     printf("El filosofo %d no ha muerto\n", philo->id);
+    // }
+
     check_dead = philo->check_dead;
-    pthread_mutex_unlock(&philo->dead); // Usa el operador & para pasar la dirección del mutex
+    pthread_mutex_unlock(&philo->dead); // Desbloquea el mutex
     return (check_dead);
 }

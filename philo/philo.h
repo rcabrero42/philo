@@ -77,7 +77,7 @@ void	init_forks(t_philo_info * philo_info);
 void    init_program(t_philo_info * philo_info);
 
 //ACTIONS
-void eat(t_philo_info	*p_info, t_philo * philo);
+int  eat(t_philo_info	*p_info, t_philo * philo);
 void ft_sleep(t_philo_info * philo_info, t_philo * philo);
 void think(t_philo * philo);
 int check_dead(t_philo *philo);
